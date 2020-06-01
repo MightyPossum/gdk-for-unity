@@ -9,8 +9,12 @@ namespace Improbable.Gdk.Core.Representation.Types
     [NeedsComponent(54)]
     public class OwnedEntityLink : IEntityRepresentation
     {
+        [field: SerializeField]
         public string EntityType { get; }
+
+        [field: SerializeField]
         public int[] RequiredComponents { get; }
+
 
         public GameObject OwnedPrefab;
         public GameObject UnownedPrefab;

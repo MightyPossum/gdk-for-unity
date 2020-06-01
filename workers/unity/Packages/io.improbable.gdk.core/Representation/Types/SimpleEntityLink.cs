@@ -8,9 +8,10 @@ namespace Improbable.Gdk.Core.Representation.Types
     [Serializable]
     public class SimpleEntityLink : IEntityRepresentation
     {
-        public string EntityType { get; }
+        public string EntityType => entityType;
         public int[] RequiredComponents { get; }
 
+        [SerializeField] private string entityType;
         public GameObject Prefab;
 
         public GameObject Resolve(SpatialOSEntityInfo entity, EntityManager manager)
