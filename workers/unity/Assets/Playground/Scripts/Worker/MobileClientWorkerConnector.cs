@@ -1,5 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Mobile;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Playground
     public class MobileClientWorkerConnector : WorkerConnector, MobileConnectionFlowInitializer.IMobileSettingsProvider
     {
 #pragma warning disable 649
+        [SerializeField] private EntityLinkerDatabase entityLinkerDatabase;
         [SerializeField] private GameObject level;
         [SerializeField] private string ipAddress;
 #pragma warning restore 649
@@ -51,7 +53,7 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddClientSystems(Worker.World);
+            WorkerUtils.AddClientSystems(Worker.World, entityLinkerDatabase);
         }
 
         public override void Dispose()
