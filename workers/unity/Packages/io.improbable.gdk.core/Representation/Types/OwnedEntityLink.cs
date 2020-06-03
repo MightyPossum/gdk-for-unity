@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core.Representation.Types
 
         public GameObject Resolve(SpatialOSEntityInfo entityInfo, EntityManager manager)
         {
-            var authComponent = ComponentDatabase.Metaclasses[54].Data; //TODO Change to AUTH
+            var authComponent = ComponentDatabase.GetMetaclass(54).Data; //TODO Change to AUTH
             return manager.HasComponent(entityInfo.Entity, authComponent)
                 ? OwnedPrefab
                 : UnownedPrefab;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Reflection;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
@@ -46,9 +46,16 @@ namespace Improbable.Gdk.GameObjectCreation
             foreach (var entityRepresentation in entityLookup)
             {
                 var entityType = entityRepresentation.Key;
-                var componentTypes = entityRepresentation.Value.RequiredComponents
+                var representation = entityRepresentation.Value;
+                var attributes = representation.GetType().GetCustomAttributes<NeedsComponentAttribute>(true);
+
+                var neededTypes = attributes
+                    .Select(attribute => ComponentDatabase.GetMetaclass(attribute.ComponentId).Data);
+
+                var componentTypes = representation.RequiredComponents
                     .Select(componentId => ComponentDatabase.GetMetaclass(componentId).Data)
                     .Append(typeof(Position.Component))
+                    .Concat(neededTypes)
                     .Distinct();
 
                 entityTypeExpectations.RegisterEntityType(entityType, componentTypes);

@@ -82,5 +82,7 @@ PrefabInstance:
       propertyPath: SetKinematicWhenNotAuthoritative
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 23914295514298150, guid: a29ccfb5b715bd844a4a424e137bdfed, type: 3}
+    - {fileID: 33084170405695402, guid: a29ccfb5b715bd844a4a424e137bdfed, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a29ccfb5b715bd844a4a424e137bdfed, type: 3}
