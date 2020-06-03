@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0598980a22146e5bb63df7b024cf2b0, type: 3}
   m_Name: EntityDatabaseClient
   m_EditorClassIdentifier: 
-  entityRepresentationResolvers:
+  EntityRepresentationResolvers:
   - id: 0
   - id: 1
   - id: 2
@@ -23,7 +23,7 @@ MonoBehaviour:
         asm: Improbable.Gdk.Core}
       data:
         entityType: Cube
-        Prefab: {fileID: 1019506993461512, guid: 9b2c7df60b27d29459f566e7ca91db4b,
+        Prefab: {fileID: 1119241936791015974, guid: 3095f262424c6314a9a2487e12d1e1e2,
           type: 3}
         requiredComponents: 
     00000001:

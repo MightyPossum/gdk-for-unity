@@ -1,5 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
@@ -135,7 +136,8 @@ namespace Improbable.Gdk.GameObjectCreation
 
                     try
                     {
-                        gameObjectCreator.OnEntityCreated(entityType, new SpatialOSEntity(entity, EntityManager), Linker);
+                        var entityInfo = new SpatialOSEntityInfo(entity, spatialEntityId.EntityId);
+                        gameObjectCreator.OnEntityCreated(entityType, entityInfo, EntityManager, Linker);
                     }
                     catch (Exception e)
                     {

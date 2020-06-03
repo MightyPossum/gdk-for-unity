@@ -9,12 +9,12 @@ namespace Improbable.Gdk.Core.Representation.Types
     public class SimpleEntityLink : IEntityRepresentation
     {
         public string EntityType => entityType;
-        public int[] RequiredComponents => requiredComponents;
+        public uint[] RequiredComponents => requiredComponents;
 
 #pragma warning disable 649
         [SerializeField] private string entityType;
         public GameObject Prefab;
-        [SerializeField] private int[] requiredComponents;
+        [SerializeField] private uint[] requiredComponents;
 #pragma warning restore 649
 
         public GameObject Resolve(SpatialOSEntityInfo entity, EntityManager manager)

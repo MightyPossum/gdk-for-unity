@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         private void OnEnable()
         {
-            listProperty = serializedObject.FindProperty(nameof(EntityLinkerDatabase.entityRepresentationResolvers));
+            listProperty = serializedObject.FindProperty(nameof(EntityLinkerDatabase.EntityRepresentationResolvers));
         }
 
         public override VisualElement CreateInspectorGUI()
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
                     menu.AddItem(new GUIContent(type.Name), false, data =>
                     {
                         var instance = (IEntityRepresentation) Activator.CreateInstance((Type) data);
-                        TargetDatabase.entityRepresentationResolvers.Add(instance);
+                        TargetDatabase.EntityRepresentationResolvers.Add(instance);
                     }, type);
                 }
 

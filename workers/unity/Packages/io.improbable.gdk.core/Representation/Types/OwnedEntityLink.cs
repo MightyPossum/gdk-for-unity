@@ -9,15 +9,16 @@ namespace Improbable.Gdk.Core.Representation.Types
     [NeedsComponent(54)]
     public class OwnedEntityLink : IEntityRepresentation
     {
-        [field: SerializeField]
-        public string EntityType { get; }
+        public string EntityType => entityType;
 
-        [field: SerializeField]
-        public int[] RequiredComponents { get; }
+        public uint[] RequiredComponents => requiredComponents;
 
-
+#pragma warning disable 649
+        [SerializeField] private string entityType;
         public GameObject OwnedPrefab;
         public GameObject UnownedPrefab;
+        [SerializeField] private uint[] requiredComponents;
+#pragma warning restore 649
 
         public GameObject Resolve(SpatialOSEntityInfo entityInfo, EntityManager manager)
         {
