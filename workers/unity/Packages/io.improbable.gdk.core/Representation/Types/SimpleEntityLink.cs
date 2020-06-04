@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core.Representation.Types
     public class SimpleEntityLink : IEntityRepresentation
     {
         public string EntityType => entityType;
-        public uint[] RequiredComponents => requiredComponents;
+        public IEnumerable<uint> RequiredComponents => requiredComponents;
 
 #pragma warning disable 649
         [SerializeField] private string entityType;

@@ -18,11 +18,11 @@ namespace Improbable.Gdk.GameObjectCreation
                 throw new InvalidOperationException(WorkerNotCreatedErrorMessage);
             }
 
-            var creator = new GameObjectCreatorFromMetadata(workerSystem.WorkerType, workerSystem.Origin, entityLinkerDatabase);
-            EnableStandardGameObjectCreation(world, creator, workerGameObject);
+            var creator = new GameObjectCreatorFromMetadata(workerSystem.WorkerType, workerSystem.Origin);
+            EnableStandardGameObjectCreation(world, creator, entityLinkerDatabase, workerGameObject);
         }
 
-        public static void EnableStandardGameObjectCreation(World world, IEntityGameObjectCreator creator,
+        public static void EnableStandardGameObjectCreation(World world, IEntityGameObjectCreator creator, EntityLinkerDatabase entityLinkerDatabase,
             GameObject workerGameObject = null)
         {
             var workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 return;
             }
 
-            world.AddSystem(new GameObjectInitializationSystem(creator, workerGameObject));
+            world.AddSystem(new GameObjectInitializationSystem(creator, entityLinkerDatabase, workerGameObject));
         }
     }
 }

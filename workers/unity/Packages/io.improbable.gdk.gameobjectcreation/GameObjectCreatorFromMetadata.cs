@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
@@ -13,9 +11,6 @@ namespace Improbable.Gdk.GameObjectCreation
 {
     public class GameObjectCreatorFromMetadata : IEntityGameObjectCreator
     {
-        private readonly Dictionary<string, IEntityRepresentation> entityLookup
-            = new Dictionary<string, IEntityRepresentation>();
-
         private readonly string workerType;
         private readonly Vector3 workerOrigin;
 
@@ -26,14 +21,10 @@ namespace Improbable.Gdk.GameObjectCreation
             typeof(Transform), typeof(Rigidbody), typeof(MeshRenderer)
         };
 
-        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, EntityLinkerDatabase entityLinkerDatabase)
+        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin)
         {
             this.workerType = workerType;
             this.workerOrigin = workerOrigin;
-
-            entityLookup = entityLinkerDatabase.EntityRepresentationResolvers.ToDictionary(
-                representation => representation.EntityType,
-                representation => representation);
         }
 
         public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
@@ -42,39 +33,10 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 typeof(Position.Component)
             });
-
-            foreach (var entityRepresentation in entityLookup)
-            {
-                var entityType = entityRepresentation.Key;
-                var representation = entityRepresentation.Value;
-                var attributes = representation.GetType().GetCustomAttributes<NeedsComponentAttribute>(true);
-
-                var neededTypes = attributes
-                    .Select(attribute => ComponentDatabase.GetMetaclass(attribute.ComponentId).Data);
-
-                var componentTypes = representation.RequiredComponents
-                    .Select(componentId => ComponentDatabase.GetMetaclass(componentId).Data)
-                    .Append(typeof(Position.Component))
-                    .Concat(neededTypes)
-                    .Distinct();
-
-                entityTypeExpectations.RegisterEntityType(entityType, componentTypes);
-            }
         }
 
-        public void OnEntityCreated(string entityType, SpatialOSEntityInfo entityInfo, EntityManager entityManager, EntityGameObjectLinker linker)
+        public void OnEntityCreated(SpatialOSEntityInfo entityInfo, GameObject prefab, EntityManager entityManager, EntityGameObjectLinker linker)
         {
-            if (!entityLookup.TryGetValue(entityType, out var representation))
-            {
-                return;
-            }
-
-            var prefab = representation.Resolve(entityInfo, entityManager);
-            if (prefab == null)
-            {
-                return;
-            }
-
             var spatialOSPosition = entityManager.GetComponentData<Position.Component>(entityInfo.Entity);
             var position = spatialOSPosition.Coords.ToUnityVector() + workerOrigin;
 

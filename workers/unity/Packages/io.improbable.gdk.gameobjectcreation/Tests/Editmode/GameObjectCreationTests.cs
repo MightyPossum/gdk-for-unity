@@ -24,8 +24,9 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
             {
                 AdditionalSystems = world =>
                 {
+                    // TODO: Hacked in EntityLinkerDatabase
                     var testGameObjectCreator = new TestGameObjectCreator(WorkerType);
-                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world, testGameObjectCreator);
+                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world, testGameObjectCreator, ScriptableObject.CreateInstance<EntityLinkerDatabase>());
                 }
             };
         }
@@ -129,7 +130,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
                 });
             }
 
-            public void OnEntityCreated(string entityType, SpatialOSEntityInfo entityInfo, EntityManager entityManager, EntityGameObjectLinker linker)
+            public void OnEntityCreated(SpatialOSEntityInfo entityInfo, GameObject prefab, EntityManager entityManager, EntityGameObjectLinker linker)
             {
                 var gameObject = new GameObject();
                 gameObject.transform.position = Vector3.one;

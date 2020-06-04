@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -27,12 +30,43 @@ namespace Improbable.Gdk.GameObjectCreation
         private EntityQuery newEntitiesQuery;
         private EntityQuery removedEntitiesQuery;
 
-        private readonly EntityTypeExpectations entityTypeExpectations = new EntityTypeExpectations();
+        private readonly Dictionary<string, (IEntityRepresentation representation, ComponentType[] expectedTypes)> entityTypeExpectations
+            = new Dictionary<string, (IEntityRepresentation representation, ComponentType[] expectedTypes)>();
 
-        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, EntityLinkerDatabase entityLinkerDatabase, GameObject workerGameObject)
         {
+            if (gameObjectCreator == null)
+            {
+                throw new ArgumentException("gameObjectCreator can not be Null", nameof(gameObjectCreator));
+            }
+
+            if (entityLinkerDatabase == null)
+            {
+                throw new ArgumentException("entityLinkerDatabase can not be Null", nameof(entityLinkerDatabase));
+            }
+
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
+
+            var additionalTypeExpectations = new EntityTypeExpectations();
+            gameObjectCreator.PopulateEntityTypeExpectations(additionalTypeExpectations);
+
+            foreach (var entityRepresentation in entityLinkerDatabase.EntityRepresentationResolvers)
+            {
+                var entityType = entityRepresentation.EntityType;
+                var additionalTypes = additionalTypeExpectations.GetExpectedTypes(entityType);
+                var componentTypes = entityRepresentation.RequiredComponents
+                    .Select(componentId =>
+                    {
+                        var managedType = ComponentDatabase.GetMetaclass(componentId).Data;
+                        return ComponentType.ReadOnly(managedType);
+                    })
+                    .Concat(additionalTypes)
+                    .Distinct()
+                    .ToArray();
+
+                entityTypeExpectations.Add(entityType, (entityRepresentation, componentTypes));
+            }
         }
 
         protected override void OnCreate()
@@ -64,8 +98,6 @@ namespace Improbable.Gdk.GameObjectCreation
                 All = new[] { ComponentType.ReadOnly<GameObjectInitSystemStateComponent>() },
                 None = minimumComponentSet
             });
-
-            gameObjectCreator.PopulateEntityTypeExpectations(entityTypeExpectations);
         }
 
         protected override void OnDestroy()
@@ -120,28 +152,43 @@ namespace Improbable.Gdk.GameObjectCreation
                 (Entity entity, ref SpatialEntityId spatialEntityId, ref Metadata.Component metadata) =>
                 {
                     var entityType = metadata.EntityType;
-                    var expectedTypes = entityTypeExpectations.GetExpectedTypes(entityType);
+                    var registered = entityTypeExpectations.TryGetValue(entityType, out var tuple);
+                    var (representation, expectedTypes) = tuple;
 
-                    foreach (var expectedType in expectedTypes)
+                    if (registered)
                     {
-                        if (!EntityManager.HasComponent(entity, expectedType))
+                        foreach (var expectedType in expectedTypes)
                         {
-                            return;
+                            if (!EntityManager.HasComponent(entity, expectedType))
+                            {
+                                return;
+                            }
                         }
                     }
 
+
 #if UNITY_EDITOR
-                    EntityManager.SetName(entity, $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
+                    EntityManager.SetName(entity,
+                        $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
 #endif
 
-                    try
+                    if (registered)
                     {
-                        var entityInfo = new SpatialOSEntityInfo(entity, spatialEntityId.EntityId);
-                        gameObjectCreator.OnEntityCreated(entityType, entityInfo, EntityManager, Linker);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogException(e);
+                        try
+                        {
+                            var entityInfo = new SpatialOSEntityInfo(entityType, entity, spatialEntityId.EntityId);
+                            var prefab = representation.Resolve(entityInfo, EntityManager);
+                            if (prefab == null)
+                            {
+                                Debug.LogError("FUUUUUUUUUUUUUUUUUUUUUUCK");
+                            }
+
+                            gameObjectCreator.OnEntityCreated(entityInfo, prefab, EntityManager, Linker);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
+                        }
                     }
 
                     PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent

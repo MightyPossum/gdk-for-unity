@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Improbable.Gdk.Core.Representation
         string EntityType { get; }
 
         // Required components before spawning (same as the current `EntityTypeExpectations`)
-        uint[] RequiredComponents { get; }
+        IEnumerable<uint> RequiredComponents { get; }
 
         GameObject Resolve(SpatialOSEntityInfo entity, EntityManager manager);
     }
