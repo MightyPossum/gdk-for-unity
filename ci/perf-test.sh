@@ -22,6 +22,7 @@ traceStart "Testing Unity: Editmode :writing_hand:"
             -batchmode \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             -runEditorTests \
+            -testCategory "Performance" \
             -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
             -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
             "${ACCELERATOR_ARGS}"
@@ -35,6 +36,7 @@ traceStart "Testing Unity: Playmode :joystick:"
             -projectPath "${PROJECT_DIR}/workers/unity" \
             -runTests \
             -testPlatform playmode \
+            -testCategory "Performance" \
             -logfile "${PROJECT_DIR}/logs/playmode-perftest-run.log" \
             -testResults "${TEST_RESULTS_DIR}/playmode-perftest-results.xml" \
             "${ACCELERATOR_ARGS}"
