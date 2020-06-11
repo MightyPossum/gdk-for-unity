@@ -9,28 +9,28 @@ namespace Improbable.Gdk.EditmodePerformanceTests
         [Performance, Test]
         public void Mono_Burst()
         {
-            Assert.IsTrue(false);
+            Assert.IsTrue(true);
         }
 
         [Performance, Test]
         [Il2Cpp]
         public void Il2cpp_Burst()
         {
-            Assert.IsTrue(false);
+            Assert.IsTrue(true);
         }
 
         [Performance, Test]
         [BurstOff]
         public void Mono_Burstoff()
         {
-            Assert.IsTrue(false);
+            Assert.IsTrue(true);
         }
 
         [Performance, Test]
         [Il2Cpp, BurstOff]
         public void Il2cpp_Burstoff()
         {
-            Assert.IsTrue(false);
+            Assert.IsTrue(true);
         }
     }
 }
