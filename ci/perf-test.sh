@@ -16,12 +16,13 @@ PROJECT_DIR="$(pwd)"
 TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
 mkdir -p "${TEST_RESULTS_DIR}"
 
-MONO_BACKEND="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettingsMono.json"
-IL2CPP_BACKEND="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettingsIL2CPP.json"
+TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettings"
+MONO_BACKEND="${TEST_SETTINGS_DIR}/Mono.json"
+IL2CPP_BACKEND="${TEST_SETTINGS_DIR}/IL2CPP.json"
 
 traceStart "Testing Unity: Editmode :writing_hand:"
     pushd "workers/unity"
-        traceStart "Editmode - Burst on - Mono"
+        traceStart "Editmode - Burst on"
             dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
                 -batchmode \
                 -projectPath "${PROJECT_DIR}/workers/unity" \
@@ -29,23 +30,10 @@ traceStart "Testing Unity: Editmode :writing_hand:"
                 -testCategory "Performance" \
                 -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
                 -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
-                "${ACCELERATOR_ARGS}" \
-                -testSettingsFile $MONO_BACKEND
+                "${ACCELERATOR_ARGS}"
         traceEnd
 
-        traceStart "Editmode - Burst on - IL2CPP"
-            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-                -batchmode \
-                -projectPath "${PROJECT_DIR}/workers/unity" \
-                -runEditorTests \
-                -testCategory "Performance,Il2CppBackend" \
-                -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
-                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
-                "${ACCELERATOR_ARGS}" \
-                -testSettingsFile $IL2CPP_BACKEND
-        traceEnd
-
-        traceStart "Editmode - Burst off - Mono"
+        traceStart "Editmode - Burst off"
             dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
                 -batchmode \
                 -projectPath "${PROJECT_DIR}/workers/unity" \
@@ -53,22 +41,7 @@ traceStart "Testing Unity: Editmode :writing_hand:"
                 -testCategory "Performance,BurstOff" \
                 -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
                 -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
-                "${ACCELERATOR_ARGS}" \
-                -testSettingsFile $MONO_BACKEND \
-                --burst-disable-compilation
-        traceEnd
-
-        traceStart "Editmode - Burst off - IL2CPP"
-            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-                -batchmode \
-                -projectPath "${PROJECT_DIR}/workers/unity" \
-                -runEditorTests \
-                -testCategory "Performance,BurstOff,Il2CppBackend" \
-                -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
-                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
-                "${ACCELERATOR_ARGS}" \
-                -testSettingsFile $IL2CPP_BACKEND \
-                --burst-disable-compilation
+                "${ACCELERATOR_ARGS}"
         traceEnd
     popd
 traceEnd
