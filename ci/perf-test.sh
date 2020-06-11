@@ -28,8 +28,8 @@ traceStart "Testing Unity: Editmode :writing_hand:"
                 -projectPath "${PROJECT_DIR}/workers/unity" \
                 -runEditorTests \
                 -testCategory "Performance" \
-                -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
-                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
+                -logfile "${PROJECT_DIR}/logs/editmode-burst-perftest-run.log" \
+                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-burst-perftest-results.xml" \
                 "${ACCELERATOR_ARGS}"
         traceEnd
 
@@ -39,8 +39,8 @@ traceStart "Testing Unity: Editmode :writing_hand:"
                 -projectPath "${PROJECT_DIR}/workers/unity" \
                 -runEditorTests \
                 -testCategory "Performance,BurstOff" \
-                -logfile "${PROJECT_DIR}/logs/editmode-perftest-run.log" \
-                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-perftest-results.xml" \
+                -logfile "${PROJECT_DIR}/logs/editmode-burstoff-perftest-run.log" \
+                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-burstoff-perftest-results.xml" \
                 "${ACCELERATOR_ARGS}"
         traceEnd
     popd
@@ -55,8 +55,8 @@ traceStart "Testing Unity: Playmode :joystick:"
                 -runTests \
                 -testPlatform playmode \
                 -testCategory "Performance" \
-                -logfile "${PROJECT_DIR}/logs/playmode-perftest-run.log" \
-                -testResults "${TEST_RESULTS_DIR}/playmode-perftest-results.xml" \
+                -logfile "${PROJECT_DIR}/logs/playmode-burst-mono-perftest-run.log" \
+                -testResults "${TEST_RESULTS_DIR}/playmode-burst-mono-perftest-results.xml" \
                 "${ACCELERATOR_ARGS}" \
                 -testSettingsFile $MONO_BACKEND
         traceEnd
@@ -68,8 +68,8 @@ traceStart "Testing Unity: Playmode :joystick:"
                 -runTests \
                 -testPlatform playmode \
                 -testCategory "Performance,Il2CppBackend" \
-                -logfile "${PROJECT_DIR}/logs/playmode-perftest-run.log" \
-                -testResults "${TEST_RESULTS_DIR}/playmode-perftest-results.xml" \
+                -logfile "${PROJECT_DIR}/logs/playmode-burst-il2cpp-perftest-run.log" \
+                -testResults "${TEST_RESULTS_DIR}/playmode-burst-il2cpp-perftest-results.xml" \
                 "${ACCELERATOR_ARGS}" \
                 -testSettingsFile $IL2CPP_BACKEND
         traceEnd
@@ -81,8 +81,8 @@ traceStart "Testing Unity: Playmode :joystick:"
                 -runTests \
                 -testPlatform playmode \
                 -testCategory "Performance,BurstOff" \
-                -logfile "${PROJECT_DIR}/logs/playmode-perftest-run.log" \
-                -testResults "${TEST_RESULTS_DIR}/playmode-perftest-results.xml" \
+                -logfile "${PROJECT_DIR}/logs/playmode-burstoff-mono-perftest-run.log" \
+                -testResults "${TEST_RESULTS_DIR}/playmode-burstoff-mono-perftest-results.xml" \
                 "${ACCELERATOR_ARGS}" \
                 -testSettingsFile $MONO_BACKEND \
                 --burst-disable-compilation
@@ -95,8 +95,8 @@ traceStart "Testing Unity: Playmode :joystick:"
                 -runTests \
                 -testPlatform playmode \
                 -testCategory "Performance,BurstOff,Il2CppBackend" \
-                -logfile "${PROJECT_DIR}/logs/playmode-perftest-run.log" \
-                -testResults "${TEST_RESULTS_DIR}/playmode-perftest-results.xml" \
+                -logfile "${PROJECT_DIR}/logs/playmode-burstoff-il2cpp-perftest-run.log" \
+                -testResults "${TEST_RESULTS_DIR}/playmode-burstoff-il2cpp-perftest-results.xml" \
                 "${ACCELERATOR_ARGS}" \
                 -testSettingsFile $IL2CPP_BACKEND \
                 --burst-disable-compilation
