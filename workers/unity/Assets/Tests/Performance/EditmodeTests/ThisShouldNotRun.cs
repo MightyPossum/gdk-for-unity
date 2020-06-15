@@ -1,34 +1,60 @@
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
-using Unity.PerformanceTesting;
 
 namespace Improbable.Gdk.EditmodePerformanceTests
 {
     public class ThisShouldNotRun
     {
-        [Performance, Test]
-        public void Mono_Burst()
+        [PerformanceTest(Burst.Default, Backend.Mono), Test]
+        public void Mono_Default()
         {
             Assert.IsTrue(true);
         }
 
-        [Performance, Test]
-        [Il2Cpp]
-        public void Il2cpp_Burst()
+        [PerformanceTest(Burst.Disabled, Backend.Mono), Test]
+        public void Mono_Disabled()
         {
             Assert.IsTrue(true);
         }
 
-        [Performance, Test]
-        [BurstOff]
-        public void Mono_Burstoff()
+        [PerformanceTest(Burst.Default | Burst.Disabled, Backend.Mono), Test]
+        public void Mono_Any()
         {
             Assert.IsTrue(true);
         }
 
-        [Performance, Test]
-        [Il2Cpp, BurstOff]
-        public void Il2cpp_Burstoff()
+        [PerformanceTest(Burst.Default, Backend.Il2Cpp), Test]
+        public void Il2Cpp_Default()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [PerformanceTest(Burst.Disabled, Backend.Il2Cpp), Test]
+        public void Il2Cpp_Disabled()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [PerformanceTest(Burst.Default | Burst.Disabled, Backend.Il2Cpp), Test]
+        public void Il2Cpp_Any()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [PerformanceTest(Burst.Default, Backend.Mono | Backend.Il2Cpp), Test]
+        public void Any_Default()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [PerformanceTest(Burst.Disabled, Backend.Mono | Backend.Il2Cpp), Test]
+        public void Any_Disabled()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [PerformanceTest(Burst.Default | Burst.Disabled, Backend.Mono | Backend.Il2Cpp), Test]
+        public void Any_Any()
         {
             Assert.IsTrue(true);
         }
