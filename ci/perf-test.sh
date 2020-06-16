@@ -44,10 +44,10 @@ function runTests {
             -batchmode \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
-            -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-run.log" \
-            -testResults "${TEST_RESULTS_DIR}/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-results.xml" \
+            -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
+            -testResults "${TEST_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
             -testCategory "${category}" \
-            "${args[@]}"
+            ${args[@]}
     popd
 }
 
@@ -70,7 +70,7 @@ traceStart "Performance Testing: Playmode :joystick:"
         do
             for scriptingBackend in mono il2cpp winrt
             do
-                traceStart "${burst} ${scriptingBackend} ${apiProfile}"
+                traceStart "${burst} ${apiProfile} ${scriptingBackend}"
                     runTests "playmode" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
