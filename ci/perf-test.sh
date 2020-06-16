@@ -57,7 +57,7 @@ traceStart "Performance Testing: Editmode :writing_hand:"
         for apiProfile in dotnet-std-2 dotnet-4
         do
             traceStart "${burst} ${apiProfile}"
-                runTests "editmode" "Performance" $burst $apiProfile
+                runTests "editmode" "Performance" ${burst} ${apiProfile}
             traceEnd
         done
     done
@@ -70,8 +70,10 @@ traceStart "Performance Testing: Playmode :joystick:"
         do
             for scriptingBackend in mono il2cpp winrt
             do
+                local platform="StandaloneWindows64"
+
                 traceStart "${platform} ${burst} ${scriptingBackend} ${apiProfile}"
-                    runTests "StandaloneWindows64" "Performance" $burst $apiProfile $scriptingBackend
+                    runTests ${platform} "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
         done
