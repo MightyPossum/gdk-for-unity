@@ -39,17 +39,13 @@ function runTests {
         args+=("--burst-disable-compilation")
     fi
 
-    args+=("-batchmode")
-    args+=("-projectPath ${PROJECT_DIR}/workers/unity ")
-    args+=("-logfile ${PROJECT_DIR}/logs/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-run.log")
-    args+=("-testResults ${TEST_RESULTS_DIR}/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-results.xml")
-
-    echo "${args[@]}"
-
     pushd "workers/unity"
-        echo "${args[@]}"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
+            -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-run.log" \
+            -testResults "${TEST_RESULTS_DIR}/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-results.xml" \
             -testCategory "${category}" \
             "${args[@]}"
     popd
