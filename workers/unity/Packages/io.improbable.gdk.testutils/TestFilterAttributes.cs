@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using Unity.PerformanceTesting;
 
@@ -18,7 +19,7 @@ namespace Improbable.Gdk.TestUtils
         Il2Cpp = 2
     }
 
-    public class PerformanceTestAttribute : PerformanceAttribute
+    public class PerformanceTestAttribute : PerformanceAttribute, IApplyToTest
     {
         private readonly Burst burst;
         private readonly Backend backend;
@@ -31,8 +32,6 @@ namespace Improbable.Gdk.TestUtils
 
         public new void ApplyToTest(Test test)
         {
-            base.ApplyToTest(test);
-
             var burstStr = burst.ToString()
                 .Replace(", ", " Burst");
 
@@ -40,6 +39,8 @@ namespace Improbable.Gdk.TestUtils
                 .Replace(", ", " Backend");
 
             test.Properties.Add("Category", $"Burst{burstStr} Backend{backendStr}");
+
+            base.ApplyToTest(test);
         }
     }
 }
