@@ -44,7 +44,10 @@ function runTests {
     args+=("-logfile ${PROJECT_DIR}/logs/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-run.log")
     args+=("-testResults ${TEST_RESULTS_DIR}/${platform}-${burst}-${scriptingBackend}-${apiProfile}-perftest-results.xml")
 
+    echo "${args[@]}"
+
     pushd "workers/unity"
+        echo "${args[@]}"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
             "${ACCELERATOR_ARGS}" \
             -testCategory "${category}" \
