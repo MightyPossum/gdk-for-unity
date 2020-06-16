@@ -57,7 +57,7 @@ traceStart "Performance Testing: Editmode :writing_hand:"
     do
         for apiProfile in dotnet-std-2 dotnet-4
         do
-            traceStart "${burst} ${scriptingBackend} ${apiProfile}"
+            traceStart "${burst} ${apiProfile}"
                 runTests "editmode" "Performance" $burst $apiProfile
             traceEnd
         done
