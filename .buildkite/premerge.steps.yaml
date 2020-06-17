@@ -80,6 +80,7 @@ steps:
     <<: *windows
     artifact_paths:
       - logs/**/*
+      - perftest-results/**/*
 
   - label: ":windows: ~ test"
     id: "test-windows"

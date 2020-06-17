@@ -3,7 +3,10 @@
     "references": [
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Unity.PerformanceTesting"
+        "Unity.PerformanceTesting",
+        "Unity.PerformanceTesting.Editor",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
@@ -12,7 +15,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

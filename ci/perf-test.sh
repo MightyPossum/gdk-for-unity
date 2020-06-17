@@ -13,8 +13,11 @@ source .shared-ci/scripts/pinned-tools.sh
 ACCELERATOR_ARGS=$(getAcceleratorArgs)
 
 PROJECT_DIR="$(pwd)"
-TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
-mkdir -p "${TEST_RESULTS_DIR}"
+XML_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
+JSON_RESULTS_DIR="${PROJECT_DIR}/perftest-results"
+
+mkdir -p "${XML_RESULTS_DIR}"
+mkdir -p "${JSON_RESULTS_DIR}"
 
 TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettings"
 
@@ -45,7 +48,7 @@ function runTests {
             -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
             -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
-            -testResults "${TEST_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
+            -testResults "${XML_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
             -testCategory "${category}" \
             ${args[@]}
     popd
@@ -76,6 +79,18 @@ traceStart "Performance Testing: Playmode :joystick:"
             done
         done
     done
+traceEnd
+
+traceStart "Parsing XML Test Results"
+    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -quit \
+        -projectPath "${PROJECT_DIR}/workers/unity" \
+        "${ACCELERATOR_ARGS}" \
+        -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
+        -executeMethod "Improbable.Gdk.TestUtils.PerformanceTestRunParser.Parse" \
+        -xmlResultsDirectory "${XML_RESULTS_DIR}" \
+        -jsonOutputDirectory "${JSON_RESULTS_DIR}"
 traceEnd
 
 cleanUnity "$(pwd)/workers/unity"
