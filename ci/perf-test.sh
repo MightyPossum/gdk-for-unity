@@ -90,8 +90,8 @@ traceStart "Parsing XML Test Results"
             "${ACCELERATOR_ARGS}" \
             -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
             -executeMethod "Improbable.Gdk.TestUtils.PerformanceTestRunParser.Parse" \
-            +xmlResultsDirectory "${XML_RESULTS_DIR}" \
-            +jsonOutputDirectory "${JSON_RESULTS_DIR}"
+            -xmlResultsDirectory "${XML_RESULTS_DIR}" \
+            -jsonOutputDirectory "${JSON_RESULTS_DIR}"
     popd
 traceEnd
 

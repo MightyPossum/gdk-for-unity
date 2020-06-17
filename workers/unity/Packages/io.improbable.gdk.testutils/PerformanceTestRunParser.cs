@@ -19,8 +19,9 @@ namespace Improbable.Gdk.TestUtils
             var jsonOutputDirectory = string.Empty;
 
             if (!args.TryGetCommandLineValue(xmlResultsDirKey, ref xmlResultsDirectory) ||
-                !args.TryGetCommandLineValue(jsonOutputDirKey, ref xmlResultsDirectory))
+                !args.TryGetCommandLineValue(jsonOutputDirKey, ref jsonOutputDirectory))
             {
+                Debug.LogWarning("You must provide valid xmlResultsDirectory and jsonOutputDirectory arguments.");
                 return;
             }
 
