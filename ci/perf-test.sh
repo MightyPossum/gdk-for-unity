@@ -82,15 +82,17 @@ traceStart "Performance Testing: Playmode :joystick:"
 traceEnd
 
 traceStart "Parsing XML Test Results"
-    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-        -batchmode \
-        -quit \
-        -projectPath "${PROJECT_DIR}/workers/unity" \
-        "${ACCELERATOR_ARGS}" \
-        -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
-        -executeMethod "Improbable.Gdk.TestUtils.PerformanceTestRunParser.Parse" \
-        -xmlResultsDirectory "${XML_RESULTS_DIR}" \
-        -jsonOutputDirectory "${JSON_RESULTS_DIR}"
+    pushd "workers/unity"
+        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -quit \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
+            "${ACCELERATOR_ARGS}" \
+            -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
+            -executeMethod "Improbable.Gdk.TestUtils.PerformanceTestRunParser.Parse" \
+            -xmlResultsDirectory "${XML_RESULTS_DIR}" \
+            -jsonOutputDirectory "${JSON_RESULTS_DIR}"
+    popd
 traceEnd
 
 cleanUnity "$(pwd)/workers/unity"
