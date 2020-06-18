@@ -34,7 +34,7 @@ function runTests {
         args+=("-runEditorTests")
     else
         scriptingBackend=$5
-        args+=("-runTests -testPlatform ${platform}")
+        args+=("-runTests -testPlatform playmode -buildTarget ${platform}")
         args+=("-testSettingsFile ${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json")
     fi
 
@@ -74,7 +74,7 @@ traceStart "Performance Testing: Playmode :joystick:"
             for scriptingBackend in mono il2cpp winrt
             do
                 traceStart "${burst} ${apiProfile} ${scriptingBackend}"
-                    runTests "playmode" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
+                    runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
         done
