@@ -31,10 +31,10 @@ function runTests {
     local args=()
 
     if [[ "${platform}" == "editmode" ]]; then
-        args+=("-runEditorTests")
+        args+=("-runEditorTests -batchmode")
     else
         scriptingBackend=$5
-        args+=("-runTests -testPlatform ${platform}")
+        args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
     fi
 
     if [[ "${burst}" == "burst-disabled" ]]; then
@@ -43,14 +43,13 @@ function runTests {
 
     pushd "workers/unity"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-            ${args[@]} \
-            -batchmode \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
             -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
             -testResults "${XML_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
             -testCategory "${category}" \
-            -testSettingsFile "${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json"
+            -testSettingsFile "${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json" \
+            ${args[@]}
     popd
 }
 
