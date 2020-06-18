@@ -31,7 +31,7 @@ function runTests {
     local args=()
 
     if [[ "${platform}" == "editmode" ]]; then
-        args+=("-runEditorTests -batchmode")
+        args+=("-runEditorTests")
     else
         scriptingBackend=$5
         args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
@@ -43,6 +43,7 @@ function runTests {
 
     pushd "workers/unity"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
             -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
