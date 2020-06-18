@@ -34,7 +34,7 @@ function runTests {
         args+=("-runEditorTests")
     else
         scriptingBackend=$5
-        args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
+        args+=("-runTests -testPlatform ${platform}")
         args+=("-testSettingsFile ${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json")
     fi
 
