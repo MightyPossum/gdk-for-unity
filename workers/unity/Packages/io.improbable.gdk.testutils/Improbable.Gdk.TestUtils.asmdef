@@ -4,13 +4,10 @@
         "Improbable.Gdk.Core",
         "Unity.Entities",
         "Unity.PerformanceTesting",
-        "Unity.PerformanceTesting.Editor",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

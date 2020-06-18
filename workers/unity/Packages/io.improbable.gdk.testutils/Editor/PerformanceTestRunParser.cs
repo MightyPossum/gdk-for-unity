@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Unity.PerformanceTesting.Editor;
 using UnityEngine;
 
-namespace Improbable.Gdk.TestUtils
+namespace Improbable.Gdk.TestUtils.Editor
 {
     public static class PerformanceTestRunParser
     {
