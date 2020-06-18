@@ -35,7 +35,6 @@ function runTests {
     else
         scriptingBackend=$5
         args+=("-runTests -testPlatform ${platform}")
-        args+=("-testSettingsFile ${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json")
     fi
 
     if [[ "${burst}" == "burst-disabled" ]]; then
@@ -44,13 +43,14 @@ function runTests {
 
     pushd "workers/unity"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            ${args[@]} \
             -batchmode \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
             -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
             -testResults "${XML_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
             -testCategory "${category}" \
-            ${args[@]}
+            -testSettingsFile "${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json"
     popd
 }
 
