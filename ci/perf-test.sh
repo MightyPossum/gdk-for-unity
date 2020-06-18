@@ -54,6 +54,20 @@ function runTests {
     popd
 }
 
+traceStart "Load unity once before running any tests"
+    pushd "workers/unity"
+        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -quit \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
+            "${ACCELERATOR_ARGS}" \
+            -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
+            -executeMethod "Improbable.Gdk.TestUtils.Editor.PerformanceTestRunParser.Parse" \
+            -xmlResultsDirectory "${XML_RESULTS_DIR}" \
+            -jsonOutputDirectory "${JSON_RESULTS_DIR}"
+    popd
+traceEnd
+
 traceStart "Performance Testing: Playmode :joystick:"
     for burst in burst-default burst-disabled
     do
