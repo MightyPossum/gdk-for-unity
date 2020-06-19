@@ -34,7 +34,7 @@ function runTests {
         args+=("-runEditorTests")
     else
         scriptingBackend=$5
-        args+=("-runTests -testPlatform ${platform}")
+        args+=("-runTests -testPlatform playmode -buildTarget ${platform}")
     fi
 
     if [[ "${burst}" == "burst-disabled" ]]; then
@@ -44,7 +44,6 @@ function runTests {
     pushd "workers/unity"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
             -batchmode \
-            -nographics \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
             -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
@@ -63,7 +62,7 @@ traceStart "Performance Testing: Playmode :joystick:"
             for scriptingBackend in mono il2cpp winrt
             do
                 traceStart "${burst} ${apiProfile} ${scriptingBackend}"
-                    runTests "playmode" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
+                    runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
                 exit 1
             done
