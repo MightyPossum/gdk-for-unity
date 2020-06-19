@@ -53,7 +53,8 @@ traceStart "Testing Unity: Playmode :joystick:"
             -coverageOptions "${COVERAGE_OPTIONS}" \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             -runTests \
-            -testPlatform playmode \
+            -testPlatform "StandaloneWindows64" \
+            -buildTarget "StandaloneWindows64" \
             -testCategory "Uncategorized" \
             -logfile "${PROJECT_DIR}/logs/playmode-test-run.log" \
             -testResults "${TEST_RESULTS_DIR}/playmode-test-results.xml" \
