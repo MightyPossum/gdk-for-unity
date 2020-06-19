@@ -63,7 +63,7 @@ traceStart "Performance Testing: Playmode :joystick:"
             for scriptingBackend in mono il2cpp winrt
             do
                 traceStart "${burst} ${apiProfile} ${scriptingBackend}"
-                    runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
+                    runTests "playmode" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
         done
