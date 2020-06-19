@@ -34,7 +34,7 @@ function runTests {
         args+=("-runEditorTests")
     else
         scriptingBackend=$5
-        args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
+        args+=("-runTests -testPlatform ${platform}")
     fi
 
     if [[ "${burst}" == "burst-disabled" ]]; then
@@ -65,6 +65,7 @@ traceStart "Performance Testing: Playmode :joystick:"
                 traceStart "${burst} ${apiProfile} ${scriptingBackend}"
                     runTests "playmode" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
+                exit 1
             done
         done
     done
