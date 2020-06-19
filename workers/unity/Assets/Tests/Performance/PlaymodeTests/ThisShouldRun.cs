@@ -53,6 +53,8 @@ namespace Improbable.Gdk.PlaymodePerformanceTests
                 .WarmupCount(5)
                 .MeasurementCount(100)
                 .Run();
+
+            Assert.Pass();
         }
 
         private static EntityTemplate GetEntityTemplate()
