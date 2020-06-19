@@ -34,7 +34,7 @@ function runTests {
         args+=("-runEditorTests")
     else
         scriptingBackend=$5
-        args+=("-runTests -testPlatform playmode -buildTarget ${platform}")
+        args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
     fi
 
     if [[ "${burst}" == "burst-disabled" ]]; then
